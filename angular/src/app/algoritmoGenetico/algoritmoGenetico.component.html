@@ -1,0 +1,52 @@
+<div class="form-div">
+  <form [formGroup]="algGenForm" [hidden]="success" [hidden]="error" (ngSubmit)="submit()">
+    
+    <h1 class="header">Algoritmo Genético</h1>
+    <hr />
+
+    <div class="example-form">
+  
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="example-full-width">Número de Gerações*</label>
+        <input matInput formControlName="numero_geracoes" name="numero_geracoes" class="form-text-box"/>
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+          <label class="example-full-width">Dimensão da População*</label>
+          <input matInput formControlName="dimensao_populacao" name="dimensao_populacao" class="form-text-box"/>
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="example-full-width">Probabilidade de Cruzamento*</label>
+        <input matInput formControlName="prob_cruzamento" name="prob_cruzamento" class="form-text-box"/>
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="example-full-width">Probabilidade de Mutação*</label>
+        <input matInput formControlName="prob_mutacao" name="prob_mutacao" class="form-text-box"/>
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="example-full-width">Valor Minimo Desejável*</label>
+        <input matInput formControlName="valor_minimo" name="valor_minimo" class="form-text-box"/>
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="form-label">Data das Entregas*</label>
+        <input matInput formControlName="data" name="data" class="form-text-box" required type="date"/>
+      </mat-form-field>
+      
+    </div>  
+
+    <p style="margin-left: 20px">Campos de preenchimento obrigatório(*)</p>
+    <button class="form-button">
+      Correr Algoritmo
+    </button>
+
+   
+
+  </form>
+ <div *ngIf="success && !error"> 
+      Resultado: {{message}}
+    </div>
+</div>    

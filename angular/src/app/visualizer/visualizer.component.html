@@ -1,0 +1,72 @@
+
+ <div
+  style="
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  "
+  *ngIf="!flagInter && !flagRodovia && !flagAutomatico"
+>
+  <button class="form-button" (click)="changeFlagRod();">Visualizar Rede Viária</button>
+  <button class="form-button" (click)="changeFlagAut()">Visualizar Distribuição para um certo dia</button>
+  <button class="form-button" (click)="changeFlagInt()">Movimento Interativo do Camião</button>
+</div>
+
+
+
+<div id="loading" style="display: flex;" *ngIf="(flagInter && !flagLoadingInt) || (!flagLoadingAut && flagAutomatico2) || (flagRodovia && !flagLoadingRod)">
+  <p>Loading</p>
+  <div class="circle"></div>
+</div>
+
+
+
+ <div
+ style="
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+ "
+ *ngIf="flagAutomatico && !flagAutomatico2"
+>
+
+<div>
+  <select name="heuristicas" id="datas" #datasSelect>
+    <option *ngFor="let data of datas" value="{{data}}">{{data}}</option>
+  </select>
+</div>
+
+
+<button class="form-button" type="submit" (click)="selecionarData()">Submit</button>
+</div>
+
+
+
+
+
+<div id="page"  *ngIf="(flagAutomatico2) || (flagStartRod) || (flagStartInt)">
+  <div
+    id="container"
+    style="background-color: #4c566a; height: 100%; width: 100%"
+  >
+    <canvas #canvas id="canvas" style="width: 30px"> </canvas>
+
+    <button style="top: 0" class="ui" id="importObj" style="color: #000000">
+      Import OBJ
+    </button>
+    <button style="right: 0" class="ui" id="importGLTF" style="color: #000000">
+      Import GLTF
+    </button>
+    <button  *ngIf="(flagAutomatico2)" style="right: 0" class="ui" id="Animate" style="color: #000000">
+      Animate
+    </button>
+  </div>
+</div>

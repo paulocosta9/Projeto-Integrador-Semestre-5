@@ -1,0 +1,172 @@
+/* Application-wide Styles */
+h1 {
+  color: #369;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 250%;
+}
+
+h2,
+h3 {
+  color: rgb(255, 255, 255);
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+}
+
+body {
+  margin: 2em;
+  height: 90vh;
+}
+
+body,input[type="text"],button {
+  color: #ECEFF4;
+  font-family: Cambria, Georgia, serif;
+}
+
+/* everywhere else */
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+html,
+body {
+  height: 100vh;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/**CSS dos formulários**/
+
+
+
+.form-text-box {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #ECEFF4;
+  background-color: #3B4252
+  ;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.error {
+  background-color: rebeccapurple;
+}
+
+.success {
+  background-color: green;
+}
+
+.form-div {
+  border: 2px solid #2E3440;
+  border-radius: 5px;
+  position: absolute;
+  top: 20%;
+}
+
+
+
+.titulo {
+  margin-left: 3%;
+  font-size: 125%;
+}
+
+.form-button {
+  background-color: #5E81AC;
+  border: 1px;
+  border-radius: 15px;
+  color: #ECEFF4;
+  font-size: 1.2rem;
+  text-align: left;
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  width: 150px;
+}
+
+.form-button:disabled {
+  background-color: #3c414b;
+}
+
+.form-button:enabled:hover {
+  background-color: red;
+  border: 1px solid #2e3440;
+  cursor: pointer;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.error {
+  background-color: rebeccapurple;
+}
+
+.success {
+  background-color: green;
+}
+
+.form-div {
+  border: 2px solid #2E3440;
+  border-radius: 5px;
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  right: 10%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 40px;
+  padding-top: 40px;
+}
+
+.mat-form-field {
+  margin-left: 5%;
+}
+
+.titulo {
+  margin-left: 3%;
+  font-size: 125%;
+}
+
+.form-button {
+  background-color: #5E81AC;
+  border: 1px;
+  border-radius: 15px;
+  color: #ECEFF4;
+  font-size: 1.2rem;
+  text-align: left;
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  width: 20%;
+}
+
+.form-button:disabled {
+  background-color: #3c414b;
+}
+
+.form-button:enabled:hover {
+  background-color: red;
+  border: 1px solid #2e3440;
+  cursor: pointer;
+}
+
+/* Listagens e Edicoes*/
+.paginas{
+  background-color:#434C5E;
+  display: flex;
+}
+table {
+  width: 100%;
+
+  
+}th,td {
+  background-color: #434C5E;
+}

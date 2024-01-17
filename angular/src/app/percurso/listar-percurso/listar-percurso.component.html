@@ -1,0 +1,83 @@
+<form [formGroup]="listarPercursoForm" style=" margin-right: 5%">
+  <div style="display: inline-flexbox;justify-content: center;">
+    <div>
+      <h1 class="header" style="margin-left: 20px; margin-top: 20px">
+        Lista de Percursos
+        <img style="width: 20px;cursor: pointer;"
+          src="https://flaticons.net/icon.php?slug_category=mobile-application&slug_icon=command-refresh"
+          (click)="listarPercursos()" />
+      </h1>
+    </div>
+    <div class="Filtragem">
+      <label>Ordenar por: </label>
+      <select name="filtros" [(ngModel)]="selectedOption" [ngModelOptions]="{ standalone: true }">
+        <option value="none" selected>Nenhum</option>
+        <option value="ordAscTempo">Ordenar Ascendentemente Tempo</option>
+        <option value="ordDescTempo">Ordenar Descendentemente Tempo</option>
+        <option value="ordAscData">Ordenar Ascendentemente Data</option>
+        <option value="ordDescData">Ordenar Descendentemente Data</option>
+        <option value="ordAscCamiao">Ordenar Ascendentemente Camião</option>
+        <option value="ordDescCamiao">Ordenar Descendentemente Camião</option>
+      </select>
+
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="form-label">Tempo do Percurso</label>
+        <input matInput formControlName="tempo" name="tempo" class="form-text-box" />
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="form-label">Camião do Percurso</label>
+        <input matInput formControlName="camiao" name="camiao" class="form-text-box" maxlength="8" minlength="8" />
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="form-label">Data do Percurso</label>
+        <input matInput formControlName="dataPercurso" name="dataPercurso" class="form-text-box" type="date" />
+      </mat-form-field>
+
+      <button class="form-button" (click)="ordenarFiltrarPercursos()" style="height: 50px; margin-top: 35px">
+        Filtrar
+      </button>
+    </div>
+  </div>
+</form>
+
+<hr />
+<table mat-table [dataSource]="percursos" class="mat-elevation-z8">
+  <ng-container matColumnDef="percurso">
+    <th mat-header-cell *matHeaderCellDef>Percurso</th>
+    <td mat-cell *matCellDef="let prc">{{prc.percurso}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="tempo">
+    <th mat-header-cell *matHeaderCellDef>Tempo</th>
+    <td mat-cell *matCellDef="let prc">{{prc.tempo}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="dataPercurso">
+    <th mat-header-cell *matHeaderCellDef>Data</th>
+    <td mat-cell *matCellDef="let prc">{{prc.dataPercurso}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="camiao">
+    <th mat-header-cell *matHeaderCellDef>Camião</th>
+    <td mat-cell *matCellDef="let prc">{{prc.camiao}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="entregas">
+    <th mat-header-cell *matHeaderCellDef>Entregas</th>
+    <td mat-cell *matCellDef="let prc">
+      <p *ngFor="let entrega of prc.entregasObj">{{entrega.armazemEntrega}} - {{entrega.entrega}}</p>
+    </td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+  <tr mat-row *matRowDef="let row;columns:colunas;"></tr>
+</table>
+
+
+<mat-paginator class="paginas" #paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 40]" aria-label="Select page"
+  color="warn" showFirstLastButtons>
+
+</mat-paginator>

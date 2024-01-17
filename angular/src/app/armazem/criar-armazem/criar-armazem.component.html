@@ -1,0 +1,98 @@
+<div class="form-div">
+
+  <form [formGroup]="armazemForm" [hidden]="success" [hidden]="error" (ngSubmit)="submit()">
+    <h1 class="header">Criar Armazém</h1>
+    <hr>
+    <h4 class="titulo" style="margin-top: 50px;">Identificação</h4>
+    <div class="example-form">
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="form-label">Id*</label>
+
+        <input matInput formControlName="id" name="id" class="form-text-box" required maxlength="3" required
+          minlength="3">
+        <div *ngIf="id?.errors?.['minlength']">
+          Este campo tem que ter exatamente 3 caracteres
+        </div>
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="form-label">Designação*</label>
+
+        <input matInput formControlName="designacao" name="designacao" class="form-text-box" required maxlength="50">
+
+      </mat-form-field>
+    </div>
+
+    <h4 class="titulo">Endereço</h4>
+
+    <div formGroupName="end" class="example-form">
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="form-label">Rua*</label>
+        <input matInput formControlName="rua" name="rua" class="form-text-box" required maxlength="50">
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="form-label">Cidade*</label>
+        <input matInput formControlName="cidade" name="cidade" class="form-text-box" required maxlength="50">
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="form-label">Código Postal*</label>
+        <input matInput formControlName="codigo_postal" name="codigoPostal" class="form-text-box" required
+          maxlength="8">
+        <div *ngIf="cod_postal?.errors?.['pattern']">
+          Tem de seguir o formato XXXX-XXX
+        </div>
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="form-label">País*</label>
+        <input matInput formControlName="pais" name="pais" class="form-text-box" required maxlength="50">
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="form-label">Número da Porta*</label>
+        <input matInput formControlName="porta" name="porta" class="form-text-box" required maxlength="5">
+
+      </mat-form-field>
+
+    </div>
+
+    <h4 class="titulo">Coordenadas</h4>
+
+    <div formGroupName="coord" class="example-form">
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="form-label">Latitude*</label>
+        <input matInput formControlName="latitude" name="latitude" class="form-text-box" required maxlength="8">
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="form-label">Longitude*</label>
+        <input matInput formControlName="longitude" name="longitude" class="form-text-box" required maxlength="8">
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="form-label">Altitude*</label>
+        <input matInput formControlName="altitude" name="altitude" class="form-text-box" required maxlength="4">
+      </mat-form-field>
+      <p style="margin-left: 20px;">Campos de preenchimento obrigatório(*)</p>
+      <button [disabled]="armazemForm.invalid" class="form-button">Criar</button>
+
+
+      <div *ngIf="success && !error" class="success">
+        Foi criado o armazém {{armazem.id}} {{armazem.designacao}} {{armazem.end.rua}} {{armazem.end.cidade}}
+        {{armazem.end.codigo_postal}} {{armazem.end.pais}} {{armazem.end.porta}} {{armazem.coord.latitude}}
+        {{armazem.coord.longitude}} {{armazem.coord.altitude}}
+      </div>
+      <div *ngIf="error" class="error">
+        <div *ngFor="let erro of errorsMessages">
+          {{erro}}</div>
+      </div>
+    </div>
+  </form>
+
+
+
+</div>

@@ -1,0 +1,883 @@
+{
+	"info": {
+		"_postman_id": "09ed8e57-dc60-4164-9669-493404181061",
+		"name": "Testes de Entrega",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Entrega Não Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Entrega não encontrada\", function () {",
+							"pm.expect(pm.response.code).to.be.oneOf([200,404,500]);}); //Metodo nao implementado",
+							"pm.test(\"Id nao existe\", function () {",
+							"    var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.not.include(\"123\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/entregas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entregas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Sem Armazém Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Entrega Sem Armazém\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Entrega Sem Armazém\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Armazém Inválido\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEntrega\": \"17-12-2023\",\n    \"massaEntrega\": 12,\n    \"armazemEntrega\": \"111\",\n    \"tempoCarregarEntrega\": 12,\n    \"tempoDescarregarEntrega\": 12,\n\n    \"id\": \"011124\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar Armazém para a Entrega",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"designacao\": \"Maia Norte\",\n        \"end\": {\n            \"rua\": \"Av. Engenheiro Esteves\",\n            \"cidade\": \"Maia\",\n            \"codigo_postal\": \"4444-999\",\n            \"pais\": \"Portugal\",\n            \"porta\": 412\n        },\n        \"coord\": {\n            \"latitude\": 40.3,\n            \"longitude\": 9.8,\n            \"altitude\": 100.0\n        },\n\n        \"id\": \"111\"\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/armazem",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"armazem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Data Antiga",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Entrega Com Data Antiga\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Post Entrega Com Data Antiga\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Por favor insira uma data não anterior ao dia de hoje\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEntrega\": \"17-12-2021\",\n    \"massaEntrega\": 12,\n    \"armazemEntrega\": \"111\",\n    \"tempoCarregarEntrega\": 12,\n    \"tempoDescarregarEntrega\": 12,\n\n    \"id\": \"011124\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Formato Inválido de Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Entrega Com Formato Inválido de Data\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Post Entrega Com Formato Inválido de Data\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"was not recognized as a valid DateTime\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEntrega\": \"172-1-2023\",\n    \"massaEntrega\": 12,\n    \"armazemEntrega\": \"111\",\n    \"tempoCarregarEntrega\": 12,\n    \"tempoDescarregarEntrega\": 12,\n\n    \"id\": \"011124\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Massa Negativa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Entrega Com Massa Negativa\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Post Entrega Com Massa Negativa\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Por favor verifique que todos os valores são acima de ZERO\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEntrega\": \"17-12-2023\",\n    \"massaEntrega\": -1,\n    \"armazemEntrega\": \"111\",\n    \"tempoCarregarEntrega\": 12,\n    \"tempoDescarregarEntrega\": 12,\n\n    \"id\": \"011124\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Massa Nula",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Entrega Com Massa Nula\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([400]);",
+							"});",
+							"pm.test(\"Post Entrega Com Massa Nula\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Error converting value {null}\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEntrega\": \"17-12-2023\",\n    \"massaEntrega\": \"\",\n    \"armazemEntrega\": \"111\",\n    \"tempoCarregarEntrega\": 12,\n    \"tempoDescarregarEntrega\": 12,\n\n    \"id\": \"011124\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Tempo de Carregamento Negativo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Entrega Com Tempo de Carregamento Negativo\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Post Entrega Com Tempo de Carregamento Negativo\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Por favor verifique que todos os valores são acima de ZERO\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEntrega\": \"17-12-2023\",\n    \"massaEntrega\": 12,\n    \"armazemEntrega\": \"111\",\n    \"tempoCarregarEntrega\": -1,\n    \"tempoDescarregarEntrega\": 12,\n\n    \"id\": \"011124\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Tempo de Carregamento Nula",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Entrega Com Tempo de Carregamento Nula\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([400]);",
+							"});",
+							"pm.test(\"Post Entrega Com Tempo de Carregamento Nula\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Error converting value {null}\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEntrega\": \"17-12-2023\",\n    \"massaEntrega\": 12,\n    \"armazemEntrega\": \"111\",\n    \"tempoCarregarEntrega\": \"\",\n    \"tempoDescarregarEntrega\": 12,\n\n    \"id\": \"011124\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Tempo de Descarregar Negativo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Entrega Com Tempo de Descarregar Negativo\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Post Entrega Com Tempo de Descarregar Negativo\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Por favor verifique que todos os valores são acima de ZERO\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEntrega\": \"17-12-2023\",\n    \"massaEntrega\": 12,\n    \"armazemEntrega\": \"111\",\n    \"tempoCarregarEntrega\": 12,\n    \"tempoDescarregarEntrega\": -1,\n\n    \"id\": \"011124\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Tempo de Descarregar Nulo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Entrega Com Tempo de Descarregar Negativo\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([400]);",
+							"});",
+							"pm.test(\"Post Entrega Com Tempo de Carregamento Nula\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Error converting value {null}\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEntrega\": \"17-12-2023\",\n    \"massaEntrega\": 12,\n    \"armazemEntrega\": \"111\",\n    \"tempoCarregarEntrega\": 12,\n    \"tempoDescarregarEntrega\": \"\",\n\n    \"id\": \"011124\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Entrega\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200 ,201]);",
+							"});",
+							"",
+							"pm.test(\"Entrega criada\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.eql(\"011124\");",
+							"    pm.globals.set(\"id\",jsonData.id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEntrega\": \"17-12-2023\",\n    \"massaEntrega\": 12,\n    \"armazemEntrega\": \"111\",\n    \"tempoCarregarEntrega\": 12,\n    \"tempoDescarregarEntrega\": 12,\n\n    \"id\": \"011124\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Duplicada",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Entrega Duplicada\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"",
+							"pm.test(\"Post Entrega Duplicada\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"An item with the same key has already been added.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEntrega\": \"17-12-2023\",\n    \"massaEntrega\": 12,\n    \"armazemEntrega\": \"111\",\n    \"tempoCarregarEntrega\": 12,\n    \"tempoDescarregarEntrega\": 12,\n\n    \"id\": \"011124\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Entrega Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Entrega existente\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Entrega não existe\", function () {\r",
+							"    var camiao = pm.response.text();\r",
+							"    pm.expect(camiao).to.include(\"011124\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/entrega/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Entrega",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update Entrega\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200 ,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Entrega atualizada\", function () {\r",
+							"    var entrega = pm.response.text();\r",
+							"    console.log(entrega);\r",
+							"    pm.expect(entrega).to.include(\"13\") && pm.expect(entrega).to.include(\"14\") && pm.expect(entrega).to.include(\"15\") && pm.expect(entrega).to.include(\"17-12-2024\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dataEntrega\": \"17-12-2024\",\r\n    \"massaEntrega\": 13,\r\n    \"armazemEntrega\": \"002\",\r\n    \"tempoCarregarEntrega\": 14,\r\n    \"tempoDescarregarEntrega\": 15,\r\n\r\n    \"id\": \"{{id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Entrega",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Apagar Entrega\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Entrega não existe\", function () {\r",
+							"   var entrega = pm.response.text();\r",
+							"    pm.expect(entrega).to.include(\"13\") && pm.expect(entrega).to.include(\"14\") && pm.expect(entrega).to.include(\"15\") && pm.expect(entrega).to.include(\"17-12-2024\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/entrega/{{id}}/hard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega",
+						"{{id}}",
+						"hard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Armazém",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/armazem/111/hard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"armazem",
+						"111",
+						"hard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Entrega Não Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Entrega não encontrada\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([404]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/entrega/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

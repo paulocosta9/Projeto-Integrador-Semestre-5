@@ -1,0 +1,79 @@
+<div class="form-div">
+  <form
+    [formGroup]="empacotamentoForm"
+    [hidden]="success"
+    [hidden]="error"
+    (ngSubmit)="submit()"
+  >
+    <h1 class="header">Criar Empacotamento</h1>
+    <hr />
+    <div class="example-form">
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="example-full-width">ID de Entrega*</label>
+
+        <input
+          matInput
+          formControlName="entregaId"
+          name="entregaId"
+          class="form-text-box"
+          required
+          maxlength="6"
+          required
+          minlength="6"
+        />
+        <div *ngIf="entregaId?.errors?.['minlength']">
+          Este campo tem que ter exatamente 6 caracteres
+        </div>
+        <div *ngIf="entregaId?.errors?.['maxlength']">
+          Este campo tem que ter exatamente 6 caracteres
+        </div>
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="example-full-width">X*</label>
+        <input
+          matInput
+          formControlName="posicaoX"
+          name="posicaoX"
+          class="form-text-box"
+        />
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="example-full-width">Y*</label>
+        <input
+          matInput
+          formControlName="posicaoY"
+          name="posicaoY"
+          class="form-text-box"
+        />
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="example-full-width">Z*</label>
+        <input
+          matInput
+          formControlName="posicaoZ"
+          name="posicaoZ"
+          class="form-text-box"
+        />
+      </mat-form-field>
+    </div>
+
+    <p style="margin-left: 20px">Campos de preenchimento obrigatório(*)</p>
+    <button [disabled]="empacotamentoForm.invalid" class="form-button">
+      Criar
+    </button>
+
+    <div *ngIf="success && !error" class="success">
+      Foi criado o empacotamento: {{ empacotamento.entregaId }}
+      {{ empacotamento.posicaoX }} {{ empacotamento.posicaoY }}
+      {{ empacotamento.posicaoZ }}
+    </div>
+    <div *ngIf="error" class="error">
+      <div *ngFor="let erro of errorsMessages">
+        {{ erro }}
+      </div>
+    </div>
+  </form>
+</div>

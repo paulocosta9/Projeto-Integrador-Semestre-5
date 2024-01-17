@@ -1,0 +1,78 @@
+<div class="form-div">
+
+    <form [formGroup]="registerForm" [hidden]="success" [hidden]="error" (ngSubmit)="submit()">
+        <h1 class="header">Criar Utilizador</h1>
+        <hr>
+        <h4 class="titulo" style="margin-top: 50px;">Identificação</h4>
+        <div class="example-form">
+            <mat-form-field [hideRequiredMarker]="true" class="full">
+                <label class="form-label">Primeiro Nome*</label>
+
+                <input matInput formControlName="primeiroNome" name="primeiroNome" class="form-text-box" required>
+                <div *ngIf="primeiroNome?.errors?.['required']">
+                    Campo Obrigatório
+                </div>
+            </mat-form-field>
+
+            <mat-form-field [hideRequiredMarker]="true" class="full">
+                <label class="form-label">Ultimo Nome*</label>
+
+                <input matInput formControlName="ultimoNome" name="ultimoNome" class="form-text-box" required>
+                <div *ngIf="ultimoNome?.errors?.['required']">
+                    Campo Obrigatório
+                </div>
+            </mat-form-field>
+
+            <mat-form-field [hideRequiredMarker]="true" class="full">
+                <label class="form-label">E-mail*</label>
+
+                <input matInput formControlName="email" name="email" class="form-text-box" required>
+                <div *ngIf="email?.errors?.['required']">
+                    Campo Obrigatório
+                </div>
+                <div *ngIf="email?.errors?.['email']">
+                    Precisa de ter um formato de email
+                </div>
+            </mat-form-field>
+
+            <mat-form-field [hideRequiredMarker]="true" class="full">
+                <label class="form-label">Número de Telemóvel*</label>
+
+                <input matInput formControlName="numeroTelemovel" name="numeroTelemovel" class="form-text-box" required
+                    min="900000000" max="999999999">
+                <div *ngIf="numeroTelemovel?.errors?.['required']">
+                    Campo Obrigatório
+                </div>
+                <div *ngIf="numeroTelemovel?.errors?.['min']">
+                    Precisa de ser um numero de telemóvel válido
+                </div>
+                <div *ngIf="numeroTelemovel?.errors?.['max']">
+                    Precisa de ser um numero de telemóvel válido
+                </div>
+            </mat-form-field>
+
+            <mat-form-field [hideRequiredMarker]="true" class="full">
+                <label class="form-label">Cargo*</label>
+
+                <select name="cargo" formControlName="cargo" class="form-text-box" required>
+                    <option value="Armazem">Gestor Armazém</option>
+                    <option value="Logistica">Gestor Logística</option>
+                    <option value="Frota">Gestor de Frota</option>
+                </select>
+                <div *ngIf="cargo?.errors?.['required']">
+                    Campo Obrigatório
+                </div>
+            </mat-form-field>
+        </div>
+        <p style="margin-left: 20px;">Campos de preenchimento obrigatório(*)</p>
+        <button [disabled]="registerForm.invalid" class="form-button">Criar</button>
+        
+    </form>
+
+    <div *ngIf="success">
+        Criado com sucesso
+    </div>
+    <div *ngIf="error">
+        <p *ngFor="let m of messages">{{m}}</p>
+    </div>
+</div>

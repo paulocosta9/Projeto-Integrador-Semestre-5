@@ -1,0 +1,902 @@
+{
+	"info": {
+		"_postman_id": "cda07e14-0d25-4ecd-8168-98c27632dd0a",
+		"name": "Testes de Camião",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Camião Não Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Tentativa de Listagem de Camioes\", function () {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,404,500]);});\r",
+							"pm.test(\"Matricula nao existe\", function () {\r",
+							"    var camiao = pm.response.text();\r",
+							"    pm.expect(camiao).to.not.include(\"BA-12-NA\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Camião",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200 ,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Camiao criado\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.matricula).to.eql(\"BA-12-NA\");\r",
+							"    pm.globals.set(\"id\",jsonData.id);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BA-12-NA\",\r\n    \"tara\": 25000,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": 120,\r\n    \"autonomiaCargaMax\": 250,\r\n    \"tempoCarregamento\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Matrícula Vazia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Matricula Vazia\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Resposta de Matricula Vazia\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"not allowed to be empty\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"\",\r\n    \"tara\": 25000,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": 120,\r\n    \"autonomiaCargaMax\": 250,\r\n    \"tempoCarregamento\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Matrícula Impossivel",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Matricula Vazia\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([402]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Resposta de Matricula Vazia\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.eql(\"Formato de matricula inválido\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"AA-AA-AA\",\r\n    \"tara\": 25000,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": 120,\r\n    \"autonomiaCargaMax\": 250,\r\n    \"tempoCarregamento\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Matrícula Igual",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Matricula Invalida\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matricula Invalida\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"E11000 duplicate key error\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BA-12-NA\",\r\n    \"tara\": 123123,\r\n    \"capacidadeCarga\": 123,\r\n    \"cargaTotalBat\": 53,\r\n    \"autonomiaCargaMax\": 342,\r\n    \"tempoCarregamento\": 32\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Tara Negativa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Tara Negativa\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([402]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Tara Negativa\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.eql(\"Não pode introduzir dados com números negativos\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BA-12-NA\",\r\n    \"tara\": -1,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": 120,\r\n    \"autonomiaCargaMax\": 250,\r\n    \"tempoCarregamento\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Tara Nula",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Tara Nula\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Tara Invalida\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"must be a number\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BK-12-NK\",\r\n    \"tara\": null,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": 120,\r\n    \"autonomiaCargaMax\": 250,\r\n    \"tempoCarregamento\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Capacidade de Carga Negativa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Matricula Invalida\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([402]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matricula Invalida\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.eql(\"Não pode introduzir dados com números negativos\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BA-12-NA\",\r\n    \"tara\": -1,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": 120,\r\n    \"autonomiaCargaMax\": 250,\r\n    \"tempoCarregamento\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Capacidade de Carga Nula",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Carga Nula\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga Nula\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"must be a number\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BK-12-NK\",\r\n    \"tara\": 25000,\r\n    \"capacidadeCarga\": null,\r\n    \"cargaTotalBat\": 120,\r\n    \"autonomiaCargaMax\": 250,\r\n    \"tempoCarregamento\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Capacidade de Carga Baterias Negativa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Matricula Invalida\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([402]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matricula Invalida\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.eql(\"Não pode introduzir dados com números negativos\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BA-12-NA\",\r\n    \"tara\": 25000,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": -1,\r\n    \"autonomiaCargaMax\": 250,\r\n    \"tempoCarregamento\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Capacidade de Carga Baterias Nula",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Carga Baterias Nula\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga Baterias Nula\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"must be a number\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BK-12-NK\",\r\n    \"tara\": 25000,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": null,\r\n    \"autonomiaCargaMax\": 250,\r\n    \"tempoCarregamento\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Autonomia Negativa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Matricula Invalida\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([402]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matricula Invalida\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.eql(\"Não pode introduzir dados com números negativos\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BA-12-NA\",\r\n    \"tara\": 25000,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": 120,\r\n    \"autonomiaCargaMax\": -1,\r\n    \"tempoCarregamento\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Autonomia Nula",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Autonomia Nula\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Autonomia Nula\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"must be a number\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BK-12-NK\",\r\n    \"tara\": 25000,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": 120,\r\n    \"autonomiaCargaMax\": null,\r\n    \"tempoCarregamento\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Tempo de carregamento Negativo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Matricula Invalida\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([402]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matricula Invalida\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.eql(\"Não pode introduzir dados com números negativos\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BA-12-NA\",\r\n    \"tara\": 25000,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": 120,\r\n    \"autonomiaCargaMax\": 250,\r\n    \"tempoCarregamento\": -1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Tempo de carregamento Nulo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Camião Com Tempo Carregamento Nulo\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Tempo Carregamento Nulo\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"must be a number\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"nome\":\"Felizberto\",\r\n    \"matricula\": \"BK-12-NK\",\r\n    \"tara\": 25000,\r\n    \"capacidadeCarga\": 3500,\r\n    \"cargaTotalBat\": 120,\r\n    \"autonomiaCargaMax\": 250,\r\n    \"tempoCarregamento\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Camião Que Existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Existe camião\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"camiao existe\", function () {\r",
+							"    var camiao = pm.response.json();\r",
+							"    pm.expect(camiao.matricula).to.eql(\"BA-12-NA\") && pm.expect(camiao.tara).to.eql(25000) && pm.expect(camiao.capacidadeCarga).to.eql(3500) && pm.expect(camiao.cargaTotalBat).to.eql(120) && pm.expect(camiao.autonomiaCargaMax).to.eql(250) && pm.expect(camiao.tempoCarregamento).to.eql(60);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/camioes/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Camião",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update Camião\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200 ,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Camião atualizado\", function () {\r",
+							"    var camiao = pm.response.json();\r",
+							"    console.log(camiao);\r",
+							"    pm.expect(camiao.matricula).to.eql(\"BL-12-NL\") && pm.expect(camiao.tara).to.eql(2500) && pm.expect(camiao.capacidadeCarga).to.eql(350) && pm.expect(camiao.cargaTotalBat).to.eql(10) && pm.expect(camiao.autonomiaCargaMax).to.eql(25) && pm.expect(camiao.tempoCarregamento).to.eql(43);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"{{id}}\",   \r\n    \"nome\":\"Mack\",\r\n    \"matricula\": \"BL-12-NL\",\r\n    \"tara\": 2500,\r\n    \"capacidadeCarga\": 350,\r\n    \"cargaTotalBat\": 10,\r\n    \"autonomiaCargaMax\": 25,\r\n    \"tempoCarregamento\": 43\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Camião",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Apagar Camião\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Camiao nao existe\", function () {\r",
+							"   var camiao = pm.response.json();\r",
+							"    pm.expect(camiao.matricula).to.eql(\"BL-12-NL\") && pm.expect(camiao.tara).to.eql(2500) && pm.expect(camiao.capacidadeCarga).to.eql(350) && pm.expect(camiao.cargaTotalBat).to.eql(10) && pm.expect(camiao.autonomiaCargaMax).to.eql(25) && pm.expect(camiao.tempoCarregamento).to.eql(43);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/camioes/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Camiao Não Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Camião não encontrado\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Camiao nao existe\", function () {\r",
+							"   var camiao = pm.response.text();\r",
+							"    pm.expect(camiao).to.include(\"Camiao nao encontrado\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/camioes/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"camioes",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

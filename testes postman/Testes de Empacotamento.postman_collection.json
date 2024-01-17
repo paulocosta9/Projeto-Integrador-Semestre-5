@@ -1,0 +1,879 @@
+{
+	"info": {
+		"_postman_id": "6514aed4-1ff4-4320-9310-f663c9bd84ee",
+		"name": "Testes de Empacotamento",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Empacotamento Não Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Empacotamento nao encontrado\", function () {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([404,500]);});\r",
+							"pm.test(\"ID nao existe\", function () {\r",
+							"    var empacotamento = pm.response.text();\r",
+							"    pm.expect(empacotamento).to.not.include(\"800813\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos/800813",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos",
+						"800813"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Armazém",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"designacao\": \"Gondomar\",\r\n        \"end\": {\r\n            \"rua\": \"Av. Engenheiro Esteves\",\r\n            \"cidade\": \"Gondomar\",\r\n            \"codigo_postal\": \"4420-999\",\r\n            \"pais\": \"Portugal\",\r\n            \"porta\": 412\r\n        },\r\n        \"coord\": {\r\n            \"latitude\": 40.3,\r\n            \"longitude\": 9.8,\r\n            \"altitude\": 100.0\r\n        },\r\n\r\n        \"id\": \"SAN\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/armazem",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"armazem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"dataEntrega\": \"17-11-2023\",\r\n        \"massaEntrega\": 12,\r\n        \"armazemEntrega\": \"SAN\",\r\n        \"tempoCarregarEntrega\": 12,\r\n        \"tempoDescarregarEntrega\": 12,\r\n\r\n        \"id\": \"800813\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"dataEntrega\": \"17-11-2023\",\r\n        \"massaEntrega\": 12,\r\n        \"armazemEntrega\": \"SAN\",\r\n        \"tempoCarregarEntrega\": 12,\r\n        \"tempoDescarregarEntrega\": 12,\r\n\r\n        \"id\": \"696969\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/entrega",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com X<0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Empacotamento\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Post Entrega Com X<0\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Can't get the value of an error result. Use 'errorValue' instead.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n    \"entregaId\": \"800813\",\n    \"posicaoX\": -2,\n    \"posicaoY\": 2,\n    \"posicaoZ\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com X>10",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Empacotamento\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Post Entrega Com X>10\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Can't get the value of an error result. Use 'errorValue' instead.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n    \"entregaId\": \"800813\",\n    \"posicaoX\": 12,\n    \"posicaoY\": 2,\n    \"posicaoZ\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Y<0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Empacotamento\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Post Entrega Com Y<0\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Can't get the value of an error result. Use 'errorValue' instead.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n    \"entregaId\": \"800813\",\n    \"posicaoX\": 2,\n    \"posicaoY\": -2,\n    \"posicaoZ\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Y>20",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Empacotamento\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Post Entrega Com Y>20\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Can't get the value of an error result. Use 'errorValue' instead.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n    \"entregaId\": \"800813\",\n    \"posicaoX\": 2,\n    \"posicaoY\": 22,\n    \"posicaoZ\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Z<0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Empacotamento\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Post Entrega Com Z<0\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Can't get the value of an error result. Use 'errorValue' instead.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n    \"entregaId\": \"800813\",\n    \"posicaoX\": 2,\n    \"posicaoY\": 2,\n    \"posicaoZ\": -3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Entrega Com Z>8",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Empacotamento\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);",
+							"});",
+							"pm.test(\"Post Entrega Com Z>8\", function () {",
+							"   var entrega = pm.response.text();",
+							"    pm.expect(entrega).to.include(\"Can't get the value of an error result. Use 'errorValue' instead.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n    \"entregaId\": \"800813\",\n    \"posicaoX\": 2,\n    \"posicaoY\": 2,\n    \"posicaoZ\": 9\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Empacotamento Com entregaId não existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Empacotamento\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([402,404,500]);\r",
+							"});\r",
+							"pm.test(\"Post Entrega Com Z>8\", function () {\r",
+							"   var entrega = pm.response.text();\r",
+							"    pm.expect(entrega).to.include(\"entrega não existe!\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"entregaId\": \"803813\",\r\n    \"posicaoX\": 1,\r\n    \"posicaoY\": 2,\r\n    \"posicaoZ\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Empacotamento",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Empacotamento\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200 ,201]);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.globals.set(\"id\",jsonData.id);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Empacotamento criado\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    console.log(pm.globals.get(\"id\"))\r",
+							"\r",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"id\"));\r",
+							"\r",
+							"    \r",
+							"    \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"entregaId\": \"800813\",\r\n    \"posicaoX\": 1,\r\n    \"posicaoY\": 2,\r\n    \"posicaoZ\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Empacotamento Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Existe emapacotamento\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Empacotamento não existe\", function () {\r",
+							"    var empacotamento = pm.response.text();\r",
+							"    pm.expect(empacotamento).to.include(pm.globals.get(\"id\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Empacotamento",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update Emapcotamento\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200 ,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Empacotamento atualizado\", function () {\r",
+							"    var empacotamento = pm.response.text();\r",
+							"    console.log(empacotamento);\r",
+							"    pm.expect(empacotamento).to.include(\"2\") && pm.expect(empacotamento).to.include(\"3\") && pm.expect(empacotamento).to.include(\"6\") && pm.expect(empacotamento).to.include(\"696969\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"entregaId\": \"696969\",\r\n    \"posicaoX\": 2,\r\n    \"posicaoY\": 3,\r\n    \"posicaoZ\": 6\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Empacotamento",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Apagar Emapcotamento\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Emapcotamento nao existe\", function () {\r",
+							"   var empacotamento = pm.response.text();\r",
+							"    pm.expect(empacotamento).to.include(pm.globals.get(\"id\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Entrega",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/entrega/800813/hard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entrega",
+						"800813",
+						"hard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Disable Armazém",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/armazem/SAN",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"armazem",
+						"SAN"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Armazém",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/armazem/SAN/hard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"armazem",
+						"SAN",
+						"hard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Empacotamento Não Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Empacotamento não encontrado\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Empacotamento não existe\", function () {\r",
+							"   var empacotamento = pm.response.text();\r",
+							"    pm.expect(empacotamento).to.include(\"Empacotamento não encontrado\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/empacotamentos/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"empacotamentos",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

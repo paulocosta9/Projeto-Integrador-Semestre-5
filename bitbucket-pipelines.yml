@@ -1,0 +1,59 @@
+# This is an example Starter pipeline configuration
+# Use a skeleton to build, test and deploy using manual and parallel steps
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+
+pipelines:
+  default:
+    - parallel:
+      - step:
+          name: 'Build DotNet'
+          image: mcr.microsoft.com/dotnet/sdk:5.0
+          script: #Cd to folder and build
+            - cd 'dotnet'
+            - dotnet build
+      - step:
+          name: 'Build NodeJS'
+          image: node:16.18.0
+          script:
+            - cd 'nodejs'
+            - npm install -g npm
+            - npm install -g nodemon
+            - npm install -g ts-node
+            - npm install -g typescript
+            #- npm install -g mocha
+            - npm install -g reflect-metadata rxjs
+            - npm install
+            #- npm run test
+            - npm run build
+          artifacts:
+            - build/**
+      - step:
+          name: 'Build Angular'
+          image: node:16.18.0
+          script:
+            - cd 'angular'
+            - npm install -g npm
+            - npm install --save three
+            - npm install --save @types/three
+            - npm install -g @angular/cli
+            # ng test
+            - ng build
+          artifacts:
+            - build/**
+      - step:
+          name: 'Deployment NodeJS'
+          deployment: production
+          script:
+            - pipe: atlassian/sftp-deploy:0.5.7
+              variables:
+                USER: 'root'
+                PASSWORD: 'y86lHKsoM0MF'
+                SERVER: 'vsgate-ssh.dei.isep.ipp.pt'
+                REMOTE_PATH: 'nodejs'
+                LOCAL_PATH: '/opt/atlassian/pipelines/agent/build/nodejs/*'
+                DEBUG: 'false'
+                EXTRA_ARGS: '-P 10844'
+
+                
+                

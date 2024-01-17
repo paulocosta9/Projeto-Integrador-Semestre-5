@@ -1,0 +1,25 @@
+<html>
+
+<head>
+  <title>Profile Page</title>
+  <link rel="stylesheet" type="text/css" href="profile.component.css">
+</head>
+
+<body>
+  <div class="profile-container" *ngIf="user" style="display: flex;justify-content: center;">
+    <div class="profile-header">
+      <div class="profile-picture">
+        <img src="{{ socialUser!.photoUrl }}" alt="Profile picture">
+      </div>
+      <h1> {{user.primeiroNome}} {{user.ultimoNome}}</h1>
+    </div>
+    <div class="profile-body">
+      <p>E-mail: {{user.email}}</p>
+      <p>Número de Telemóvel: {{user.numeroTelemovel}}</p>
+      <p>Cargo: Gestor de {{user.cargo}}</p>
+      <button class="button" (click)="refreshAuthToken()">Atualizar Autenticação</button>
+    </div>
+  </div>
+</body>
+
+</html>

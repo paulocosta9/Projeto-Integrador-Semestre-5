@@ -1,0 +1,102 @@
+<div class="form-div">
+  <form
+    [formGroup]="entregaForm"
+    [hidden]="success"
+    [hidden]="error"
+    (ngSubmit)="submit()"
+  >
+    <h1 class="header">Criar Entrega</h1>
+    <hr />
+
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="form-label">ID Entrega*</label>
+
+        <input
+          matInput
+          formControlName="id"
+          name="id"
+          class="form-text-box"
+          required
+          maxlength="6"
+          required
+          minlength="6"
+        />
+        <div *ngIf="id?.errors?.['minlength']">
+          Este campo tem que ter exatamente 6 caracteres
+        </div>
+      </mat-form-field>
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="form-label">ID Armazém Entrega*</label>
+        <input
+          formControlName="armazemEntrega"
+          name="armazemEntrega.id"
+          class="form-text-box"
+          required
+          minlength="3"
+          required
+          maxlength="3"
+        />
+      </mat-form-field>
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+
+
+        <div *ngIf="armazemEntrega?.errors?.['minlength']">
+          Este campo tem que ter exatamente 3 caracteres alfanuméricos
+        </div>
+
+        <label class="form-label">Data de Entrega*</label>
+        <input
+          formControlName="dataEntrega"
+          required
+          name="dataEntrega"
+          class="form-text-box"
+          type="date"
+          id="datePickerId"
+        />
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="form-label">Massa da Entrega*</label>
+        <input
+          formControlName="massaEntrega"
+          name="massaEntrega"
+          class="form-text-box"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="form-label">Tempo de Carregamento da Entrega*</label>
+        <input
+          formControlName="tempoCarregarEntrega"
+          name="tempoCarregarEntrega"
+          class="form-text-box"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <label class="form-label">Tempo de Descarregamento da Entrega*</label>
+        <input
+          formControlName="tempoDescarregarEntrega"
+          name="tempoDescarregarEntrega"
+          class="form-text-box"
+          required
+        />
+      </mat-form-field>
+    <p style="margin-left: 20px">Campos de preenchimento obrigatório(*)</p>
+    <div>
+      <button [disabled]="entregaForm.invalid" class="form-button">
+        Criar
+      </button>
+    </div>
+    <div *ngIf="success && !error" class="success">
+      Foi criada a entrega {{ entrega.id }} {{ entrega.armazemEntrega }}
+      {{ entrega.dataEntrega }} {{ entrega.massaEntrega }}
+      {{ entrega.tempoCarregarEntrega }} {{ entrega.tempoDescarregarEntrega }}
+    </div>
+    <div *ngIf="error" class="error">
+      <div *ngFor="let erro of errorsMessages">{{ erro }}</div>
+    </div>
+  </form>
+</div>

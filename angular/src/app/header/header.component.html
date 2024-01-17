@@ -1,0 +1,32 @@
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+/>
+<header>
+  <button routerLink="/dashboard" class="homebttn" style="background-color: rgba(0,0,0,0);border-color:rgba(0,0,0,0) ;">
+    <i class="material-icons" style="cursor: pointer;">home </i>
+  </button>
+ 
+    <div class="dropdown">
+      <div style="display: flex;
+      align-items: center;
+      justify-content: space-between;cursor: pointer;" >
+        <i class="material-icons" >person </i>
+        <img
+          *ngIf="login && socialUser"
+          class="card-img-top img-responsive photo"
+          src="{{ socialUser.photoUrl }}"
+          style="width: 20px"
+        />
+        <p *ngIf="login">{{ socialUser?.name }}</p>
+        
+      </div>
+      <div class="dropdown-content">
+        <a routerLink="/login" *ngIf="!login">Login</a>
+        <a routerLink="/perfil" *ngIf="login">Perfil</a>
+        <a routerLink="/dashboard" mat-menu-item (click)="signOut()" *ngIf="login" >LogOut</a>
+      </div>
+    </div>
+ 
+</header>
+

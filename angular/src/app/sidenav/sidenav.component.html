@@ -1,0 +1,130 @@
+<mat-nav-list id="sidenav" style="width: 170px">
+
+  <mat-tree
+    [dataSource]="dataSource"
+    [treeControl]="treeControl"
+    *ngIf="user?.cargo === 'Armazem'||user?.cargo === 'Admin'"
+  >
+    <!-- This is the tree node template for leaf nodes -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+      <!-- use a disabled button to provide padding for tree leaf -->
+
+      <button
+        mat-icon-button
+        routerLink="/{{ obj?.name | lowercase }}/{{ node.name | lowercase }}"
+        class="sidebarbutton"
+      >
+        {{ node.name }}
+      </button>
+    </mat-tree-node>
+
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-tree-node
+      *matTreeNodeDef="let node; when: hasChild"
+      matTreeNodePadding
+    >
+      <button
+        mat-icon-button
+        matTreeNodeToggle
+        class="sidebarbutton"
+        [attr.aria-label]="'Toggle ' + node.name"
+        (click)="getObject(node)"
+      >
+        <i></i> {{ node.name }}
+      </button>
+    </mat-tree-node>
+  </mat-tree>
+
+  <mat-tree
+    [dataSource]="dataSource2"
+    [treeControl]="treeControl"
+    *ngIf="user?.cargo === 'Logistica'||user?.cargo === 'Admin'"
+  >
+    <!-- This is the tree node template for leaf nodes -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+      <!-- use a disabled button to provide padding for tree leaf -->
+
+      <button
+        mat-icon-button
+        routerLink="/{{ obj?.name | lowercase }}/{{ node.name | lowercase }}"
+        class="sidebarbutton"
+      >
+        {{ node.name }}
+      </button>
+    </mat-tree-node>
+
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-tree-node
+      *matTreeNodeDef="let node; when: hasChild"
+      matTreeNodePadding
+    >
+      <button
+        mat-icon-button
+        matTreeNodeToggle
+        class="sidebarbutton"
+        [attr.aria-label]="'Toggle ' + node.name"
+        (click)="getObject(node)"
+      >
+        <i></i> {{ node.name }}
+      </button>
+    </mat-tree-node>
+  </mat-tree>
+
+  <mat-tree
+    [dataSource]="dataSource3"
+    [treeControl]="treeControl"
+    *ngIf="user?.cargo === 'Frota'||user?.cargo === 'Admin'"
+  >
+    <!-- This is the tree node template for leaf nodes -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+      <!-- use a disabled button to provide padding for tree leaf -->
+
+      <button
+        mat-icon-button
+        routerLink="/{{ obj?.name | lowercase }}/{{ node.name | lowercase }}"
+        class="sidebarbutton"
+      >
+        {{ node.name }}
+      </button>
+    </mat-tree-node>
+
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-tree-node
+      *matTreeNodeDef="let node; when: hasChild"
+      matTreeNodePadding
+    >
+      <button
+        mat-icon-button
+        matTreeNodeToggle
+        class="sidebarbutton"
+        [attr.aria-label]="'Toggle ' + node.name"
+        (click)="getObject(node)"
+      >
+        <i></i> {{ node.name }}
+      </button>
+    </mat-tree-node>
+  </mat-tree>
+  <div >
+    <button mat-icon-button routerLink="/visualizer" class="sidebarbutton" *ngIf="user?.cargo === 'Logistica'||user?.cargo === 'Admin'">
+      3D Visualizer
+    </button>
+    <button mat-icon-button routerLink="/planeamento" class="sidebarbutton" *ngIf="user?.cargo === 'Logistica'||user?.cargo === 'Admin'">
+      Planeamento
+    </button>
+    <button mat-icon-button routerLink="/percursos" class="sidebarbutton" *ngIf="user?.cargo === 'Logistica'||user?.cargo === 'Admin'">
+      Percursos
+    </button>
+    <button mat-icon-button routerLink="/planeamento/algoritimoGenetico" class="sidebarbutton" *ngIf="user?.cargo === 'Logistica'||user?.cargo === 'Admin'">
+      Algoritmo Genético
+    </button>
+  </div>
+
+  <div *ngIf="user?.cargo === 'Admin'">
+    <button mat-icon-button routerLink="/registar" class="sidebarbutton">
+      Registar Novo Utilizador
+    </button>
+    <button mat-icon-button routerLink="/users" class="sidebarbutton">
+      Listar Utilizadores
+    </button>
+  </div>
+</mat-nav-list>

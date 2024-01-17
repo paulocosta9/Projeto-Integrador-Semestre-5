@@ -1,0 +1,56 @@
+<div class="form-div">
+  <form
+    [formGroup]="planeamentoForm"
+    [hidden]="success"
+    [hidden]="error"
+    [hidden]="success2"
+    [hidden]="flag"
+    (ngSubmit)="submit()"
+  >
+    <h1 class="header">Planeamento</h1>
+    <hr />
+    <div class="example-form">
+      <mat-form-field [hideRequiredMarker]="true" class="full">
+        <label class="form-label">Data*</label>
+        <input
+          matInput
+          formControlName="dataEntrega"
+          name="dataEntrega"
+          class="form-text-box"
+          required
+          type="date"
+        />
+      </mat-form-field>
+    </div>
+
+    <p style="margin-left: 20px">Campos de preenchimento obrigatório(*)</p>
+    <button [disabled]="planeamentoForm.invalid" class="form-button">
+      Submeter
+    </button>
+
+    <div *ngIf="success" style="white-space: pre">
+      <br>Camião: {{camiao}}<br>
+      {{tempo}}<br>
+      <br>Lista de Entregas:<br> {{listaEn}}
+    </div>
+
+    <div *ngIf="success2" style="white-space: pre">
+      <br>Camião: {{camiao}}<br>
+      {{tempo}}<br>
+      <br>Lista de Entregas:<br> {{listaEn}}
+    </div>
+  </form>
+
+  <div *ngIf="error" style="white-space: pre">
+    Não existem entregas para esse dia
+  </div>
+  <div *ngIf="flag" class="flag">
+    <select name="heuristicas" id="heuristicas">
+      <option value="menorTempo">MenorTempo</option>
+      <option value="maiorPeso">Maior Peso</option>
+      <option value="combinado">Combinado</option>
+    </select>
+
+    <button class="form-button" (click)="submeterHeuristica()">Submeter</button>
+  </div>
+</div>

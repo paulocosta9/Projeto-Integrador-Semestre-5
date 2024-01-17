@@ -1,0 +1,489 @@
+{
+	"info": {
+		"_postman_id": "98c94198-3a41-42f0-8403-ac948f0fb9e9",
+		"name": "Testes de Armazém",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Armazem Não Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Armazem nao encontrado\", function () {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([404]);}); //Metodo nao implementado\r",
+							"\r",
+							"pm.test(\"Resposta de Armazem nao encontrado\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"Not Found\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/armazem/139",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"armazem",
+						"139"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Armazem",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Armazem\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200 ,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Armazem criado\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(\"139\");\r",
+							"    pm.expect(jsonData.designacao).to.eql(\"Maia Este\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"designacao\": \"Maia Este\",\r\n        \"end\": {\r\n            \"rua\": \"Av. Engenheiro Esteves\",\r\n            \"cidade\": \"Maia\",\r\n            \"codigo_postal\": \"4444-999\",\r\n            \"pais\": \"Portugal\",\r\n            \"porta\": 412\r\n        },\r\n        \"coord\": {\r\n            \"latitude\": 40.3,\r\n            \"longitude\": 9.8,\r\n            \"altitude\": 100.0\r\n        },\r\n\r\n        \"id\": \"139\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/armazem",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"armazem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Armazem Id Invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Armazem\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"designacao\": \"Maia Este\",\r\n        \"end\": {\r\n            \"rua\": \"Av. Engenheiro Esteves\",\r\n            \"cidade\": \"Maia\",\r\n            \"codigo_postal\": \"4444-999\",\r\n            \"pais\": \"Portugal\",\r\n            \"porta\": 412\r\n        },\r\n        \"coord\": {\r\n            \"latitude\": 40.3,\r\n            \"longitude\": 9.8,\r\n            \"altitude\": 100.0\r\n        },\r\n\r\n        \"id\": \"1390\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/armazem",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"armazem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Armazem Coord Invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Criar Armazem\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Resposta de Criar Armazem\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"Latitude inválida\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"designacao\": \"Maia Este\",\r\n        \"end\": {\r\n            \"rua\": \"Av. Engenheiro Esteves\",\r\n            \"cidade\": \"Maia\",\r\n            \"codigo_postal\": \"4444-999\",\r\n            \"pais\": \"Portugal\",\r\n            \"porta\": 412\r\n        },\r\n        \"coord\": {\r\n            \"latitude\": 95.3,\r\n            \"longitude\": 189.8,\r\n            \"altitude\": 100.0\r\n        },\r\n\r\n        \"id\": \"139\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/armazem",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"armazem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Armazem Que Existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Existe Armazem\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Id existe\", function () {\r",
+							"    var armazem = pm.response.text();\r",
+							"    pm.expect(armazem).to.include(\"139\");\r",
+							"    pm.expect(armazem).to.include(\"Maia Este\");\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/armazem/139",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"armazem",
+						"139"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Armazem",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update Armazem\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200 ,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Designacao atualizada\", function () {\r",
+							"    var armazem = pm.response.text();\r",
+							"    console.log(armazem);\r",
+							"    pm.expect(armazem).to.include(\"Maia Sul\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"designacao\": \"Maia Sul\",\r\n        \"end\": {\r\n            \"rua\": \"Av. Engenheiro Esteves\",\r\n            \"cidade\": \"Maia\",\r\n            \"codigo_postal\": \"4444-999\",\r\n            \"pais\": \"Portugal\",\r\n            \"porta\": 412\r\n        },\r\n        \"coord\": {\r\n            \"latitude\": 40.3,\r\n            \"longitude\": 9.8,\r\n            \"altitude\": 100.0\r\n        },\r\n\r\n        \"id\": \"139\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/armazem/139",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"armazem",
+						"139"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Armazem Id Invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update Armazem\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Designacao atualizada\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"Bad Request\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"designacao\": \"Maia Sul\",\r\n    \"end\": {\r\n        \"rua\": \"Av. Engenheiro Esteves\",\r\n        \"cidade\": \"Maia\",\r\n        \"codigo_postal\": \"4444-999\",\r\n        \"pais\": \"Portugal\",\r\n        \"porta\": 412\r\n    },\r\n    \"coord\": {\r\n        \"latitude\": 40.3,\r\n        \"longitude\": 9.8,\r\n        \"altitude\": 100.0\r\n    },\r\n    \"id\": \"1394\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/armazem/139",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"armazem",
+						"139"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Armazem Coord Invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update Armazem\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Designacao atualizada\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"Latitude inválida\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"designacao\": \"Maia Este\",\r\n        \"end\": {\r\n            \"rua\": \"Av. Engenheiro Esteves\",\r\n            \"cidade\": \"Maia\",\r\n            \"codigo_postal\": \"4444-999\",\r\n            \"pais\": \"Portugal\",\r\n            \"porta\": 412\r\n        },\r\n        \"coord\": {\r\n            \"latitude\": 95.3,\r\n            \"longitude\": 189.8,\r\n            \"altitude\": 100.0\r\n        },\r\n\r\n        \"id\": \"139\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/armazem/139",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"armazem",
+						"139"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Armazem",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Apagar Armazem\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Armazem nao existe\", function () {\r",
+							"   var armazem = pm.response.text();\r",
+							"    pm.expect(armazem).to.include(\"139\") && pm.expect(armazem).to.include(\"Maia Sul\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/armazem/139",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"armazem",
+						"139"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Armazem Hard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Apagar Armazem\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/armazem/139/hard",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"armazem",
+						"139",
+						"hard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Armazem Não Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Armazem não encontrado\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([404]);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/armazem/139",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"armazem",
+						"139"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

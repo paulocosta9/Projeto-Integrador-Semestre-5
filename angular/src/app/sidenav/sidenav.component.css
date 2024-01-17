@@ -1,0 +1,79 @@
+#sidenav::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+.mat-divider {
+  border: 1px;
+  border-color: #ECEFF4;
+}
+
+div {
+  height: 100%;
+}
+
+.mat-subheader {
+  color: #d3d3ec;
+  font-size: 0.6rem;
+  font-weight: 100;
+  letter-spacing: 1px;
+}
+
+mat-tree {
+  background-color: #2E3440;
+  margin-top: 20%;
+}
+
+.arrow {
+  border: solid rgb(255, 255, 255);
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  margin-bottom: 3%;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.sidebarbutton {
+  background-color: #2E3440;
+  border: 1px;
+  cursor: pointer;
+  color: #ECEFF4;
+  font-size: 1.2rem;
+  text-align: left;
+  padding: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.sidebarbutton:hover {
+  background-color: #4C566A;
+  color: #ECEFF4;
+  border: 1px solid #2E3440;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+

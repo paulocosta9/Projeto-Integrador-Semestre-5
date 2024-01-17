@@ -1,0 +1,702 @@
+{
+	"info": {
+		"_postman_id": "27c82630-a4fd-41f0-b97b-f061d2bf5e5e",
+		"name": "Testes de Rota",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET Rotas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"GET todas as Rotas\", function () {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,404,500]);});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/rotas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"rotas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Armazém Inicial",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"designacao\": \"Maia Norte\",\r\n    \"end\": {\r\n        \"rua\": \"Av. Engenheiro Esteves\",\r\n        \"cidade\": \"Maia\",\r\n        \"codigo_postal\": \"4444-999\",\r\n        \"pais\": \"Portugal\",\r\n        \"porta\": 412\r\n    },\r\n    \"coord\": {\r\n        \"latitude\": 40.3,\r\n        \"longitude\": 9.8,\r\n        \"altitude\": 100.0\r\n    },\r\n    \"id\": \"250\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/armazem",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"armazem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Armazém Final",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"designacao\": \"Maia Sul\",\r\n    \"end\": {\r\n        \"rua\": \"Av. Engenheiro Esteves 2\",\r\n        \"cidade\": \"Maia 2\",\r\n        \"codigo_postal\": \"4444-912\",\r\n        \"pais\": \"Portugal\",\r\n        \"porta\": 413\r\n    },\r\n    \"coord\": {\r\n        \"latitude\": 41.3,\r\n        \"longitude\": 10.8,\r\n        \"altitude\": 104.0\r\n    },\r\n    \"id\": \"251\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/armazem",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"armazem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Rota",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post Rota Correta\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200 ,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Rota Criada\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(jsonData.armazemInicial).to.eql(\"250\");\r",
+							"    pm.expect(jsonData.armazemFinal).to.eql(\"251\");\r",
+							"    pm.expect(jsonData.duracao).to.eql(25);\r",
+							"    pm.expect(jsonData.energiaGasta).to.eql(39);\r",
+							"    pm.expect(jsonData.distancia).to.eql(87);\r",
+							"\r",
+							"    pm.globals.set(\"id\",jsonData.id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"armazemInicial\": \"250\",\r\n    \"armazemFinal\": \"251\",\r\n    \"duracao\": 25,\r\n    \"energiaGasta\": 39,\r\n    \"distancia\": 87,\r\n    \"tempExtra\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/rotas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"rotas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Rota Criada",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"GET Rota Criada\", function () {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,500]);});\r",
+							"\r",
+							"pm.test(\"Rota Criada\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"id\"));\r",
+							"    pm.expect(jsonData.armazemInicial).to.eql(\"250\");\r",
+							"    pm.expect(jsonData.armazemFinal).to.eql(\"251\");\r",
+							"    pm.expect(jsonData.duracao).to.eql(25);\r",
+							"    pm.expect(jsonData.energiaGasta).to.eql(39);\r",
+							"    pm.expect(jsonData.distancia).to.eql(87);\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/rotas/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"rotas",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Armazém Inicial Não Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"POST Armazém Inicial Não Existente\", function () {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([402]);});\r",
+							"\r",
+							"pm.test(\"POST Resposta Armazém Inicial Não Existente\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.eql(\"Armazem Inicial não existe!\");\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"armazemInicial\": \"231\",\r\n    \"armazemFinal\": \"251\",\r\n    \"duracao\": 25,\r\n    \"energiaGasta\": 39,\r\n    \"distancia\": 87,\r\n    \"tempExtra\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/rotas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"rotas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Armazém Final Não Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"POST Armazém Final Não Existente\", function () {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([402]);});\r",
+							"\r",
+							"pm.test(\"POST Resposta Armazém Final Não Existente\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.eql(\"Armazem Final não existe!\");\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"armazemInicial\": \"250\",\r\n    \"armazemFinal\": \"212\",\r\n    \"duracao\": 25,\r\n    \"energiaGasta\": 39,\r\n    \"distancia\": 87,\r\n    \"tempExtra\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/rotas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"rotas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Duração Negativa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"POST Duração Negativa\", function () {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([402]);});\r",
+							"\r",
+							"pm.test(\"POST Resposta Duração Negativa\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.eql(\"Introduza valores superiores a 0\");\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"armazemInicial\": \"250\",\r\n    \"armazemFinal\": \"251\",\r\n    \"duracao\": -2,\r\n    \"energiaGasta\": 39,\r\n    \"distancia\": 87,\r\n    \"tempExtra\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/rotas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"rotas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Energia Gasta Negativa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"POST Energia Gasta Negativa\", function () {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([402]);});\r",
+							"\r",
+							"pm.test(\"POST Resposta Energia Gasta Negativa\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.eql(\"Introduza valores superiores a 0\");\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"armazemInicial\": \"250\",\r\n    \"armazemFinal\": \"251\",\r\n    \"duracao\": 25,\r\n    \"energiaGasta\": -7,\r\n    \"distancia\": 87,\r\n    \"tempExtra\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/rotas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"rotas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Distância Negativa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"POST Distância Negativa\", function () {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([402]);});\r",
+							"\r",
+							"pm.test(\"POST Resposta  Distância Negativa\", function () {\r",
+							"    var response = pm.response.text();\r",
+							"    pm.expect(response).to.eql(\"Introduza valores superiores a 0\");\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"armazemInicial\": \"250\",\r\n    \"armazemFinal\": \"251\",\r\n    \"duracao\": 25,\r\n    \"energiaGasta\": 39,\r\n    \"distancia\": -2,\r\n    \"tempExtra\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/rotas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"rotas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Rota",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"PUT Rota\", function () {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([201,500]);});\r",
+							"\r",
+							"pm.test(\"Rota\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"id\"));\r",
+							"    pm.expect(jsonData.armazemInicial).to.eql(\"250\");\r",
+							"    pm.expect(jsonData.armazemFinal).to.eql(\"251\");\r",
+							"    pm.expect(jsonData.duracao).to.eql(54);\r",
+							"    pm.expect(jsonData.energiaGasta).to.eql(29);\r",
+							"    pm.expect(jsonData.distancia).to.eql(17);\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"armazemInicial\": \"250\",\r\n    \"armazemFinal\": \"251\",\r\n    \"duracao\": 54,\r\n    \"energiaGasta\": 29,\r\n    \"distancia\": 17,\r\n    \"tempExtra\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/rotas/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"rotas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Rota",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"DELETE Rota\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Rota apagada\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"id\"));\r",
+							"    pm.expect(jsonData.armazemInicial).to.eql(\"250\");\r",
+							"    pm.expect(jsonData.armazemFinal).to.eql(\"251\");\r",
+							"    pm.expect(jsonData.duracao).to.eql(54);\r",
+							"    pm.expect(jsonData.energiaGasta).to.eql(29);\r",
+							"    pm.expect(jsonData.distancia).to.eql(17);\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/rotas/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"rotas",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Armazém Inicial",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/armazem/250",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"armazem",
+						"250"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Armazém Inicial Hard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/armazem/250/hard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"armazem",
+						"250",
+						"hard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Armazém Final",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/armazem/251",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"armazem",
+						"251"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Armazém Final Hard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/armazem/251/hard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"armazem",
+						"251",
+						"hard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Rota Não Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"GET Rota Não Existente\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"GET Resposta Rota Não Existente\", function () {\r",
+							"   var response = pm.response.text();\r",
+							"    pm.expect(response).to.include(\"Rota nao encontrada\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/rotas/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"rotas",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

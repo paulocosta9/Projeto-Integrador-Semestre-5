@@ -1,0 +1,142 @@
+<form
+  [formGroup]="listaEntregaForm"
+  style=" margin-right: 5%"
+>
+<div style="display: inline-flexbox;justify-content: center;">
+  <div>
+    <h1 class="header" style="margin-left: 20px; margin-top: 20px">
+      Lista de Entregas
+      <img
+        style="width: 20px;cursor: pointer;"
+        src="https://flaticons.net/icon.php?slug_category=mobile-application&slug_icon=command-refresh"
+        (click)="listarEntregas()"
+      />
+    </h1>
+  </div>
+  <div name="Lista para Ordenação" style="margin-left: 35%;margin-top: -5%;display: inline-flexbox;justify-content: center;">
+    <label>Ordenar por: </label>
+    <select
+      name="filtros"
+      [(ngModel)]="selectedOption"
+      [ngModelOptions]="{ standalone: true }"
+    >
+      <option value="none" selected>Nenhum</option> 
+      <option value="idasc">Id Ascendente</option>
+      <option value="iddes">Id Descendente</option>
+      <option value="armazemEntregaasc">Armazém de Entrega Ascendente</option>
+      <option value="armazemEntregades">Armazém de Entrega Descendente</option>
+      <option value="dataEntregaasc">Data Ascendente</option>
+      <option value="dataEntregades">Data Descendente</option>
+      <option value="massaEntregaasc">Massa Ascendente</option>
+      <option value="massaEntregades">Massa Descendente</option>
+      <option value="tempoCarregarEntregaasc">
+        Tempo Carregamento Ascendente
+      </option>
+      <option value="tempoCarregarEntregades">
+        Tempo Carregamento Descendente
+      </option>
+      <option value="tempoDescarregarEntregaasc">
+        Tempo Descarregamento Ascendente
+      </option>
+      <option value="tempoDescarregarEntregades">
+        Tempo Descarregamento Descendente
+      </option>
+    </select>
+
+    <mat-form-field [hideRequiredMarker]="true" class="full">
+      <label class="form-label">ID da Entrega</label>
+
+      <input
+        matInput
+        formControlName="id"
+        name="id"
+        class="form-text-box"
+        maxlength="6"
+        minlength="6"
+      />
+    </mat-form-field>
+    <mat-form-field [hideRequiredMarker]="true" class="full">
+      <label class="form-label">Armazem de Entrega</label>
+
+      <input
+        matInput
+        formControlName="armazemEntrega"
+        name="armazemEntrega"
+        class="form-text-box"
+        maxlength="3"
+        minlength="3"
+      />
+    </mat-form-field>
+
+    <mat-form-field [hideRequiredMarker]="true" class="full">
+      <label class="form-label">Data de Entrega</label>
+
+      <input
+        matInput
+        formControlName="dataEntrega"
+        name="dataEntrega"
+        class="form-text-box"
+        type="date"
+      />
+    </mat-form-field>
+    <button
+      class="form-button"
+      (click)="ordenarfiltrarEntregas()"
+      style="height: 50px; margin-top: 35px"
+    >
+      Filtrar
+    </button>
+  </div>
+</div>
+</form>
+
+<hr />
+<table mat-table [dataSource]="entregas" class="mat-elevation-z8">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let entrega">{{ entrega.id }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="armazemEntrega">
+    <th mat-header-cell *matHeaderCellDef>Armazém de Entrega</th>
+    <td mat-cell *matCellDef="let entrega">{{ entrega.armazemEntrega }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="dataEntrega">
+    <th mat-header-cell *matHeaderCellDef>Data de Entrega</th>
+    <td mat-cell *matCellDef="let entrega">{{ entrega.dataEntrega }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="massaEntrega">
+    <th mat-header-cell *matHeaderCellDef>Massa de Entrega</th>
+    <td mat-cell *matCellDef="let entrega">{{ entrega.massaEntrega }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="tempoCarregarEntrega">
+    <th mat-header-cell *matHeaderCellDef>Tempo de Carregamento de Entrega</th>
+    <td mat-cell *matCellDef="let entrega">
+      {{ entrega.tempoCarregarEntrega }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="tempoDescarregarEntrega">
+    <th mat-header-cell *matHeaderCellDef>Tempo de Descarregamento de Entrega</th>
+    <td mat-cell *matCellDef="let entrega">
+      {{ entrega.tempoDescarregarEntrega }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<mat-paginator
+  class="paginas"
+  #paginator
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 15]"
+  aria-label="Select page"
+  color="warn"
+  showFirstLastButtons
+>
+</mat-paginator>

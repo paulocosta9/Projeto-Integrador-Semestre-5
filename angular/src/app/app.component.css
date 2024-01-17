@@ -1,0 +1,34 @@
+/* AppComponent's private CSS styles */
+h1 {
+    margin-bottom: 0;
+  }
+:host{
+  height: 100%;
+}
+  nav a {
+    padding: 1rem;
+    text-decoration: none;
+    margin-top: 10px;
+    display: inline-block;
+    background-color: #e8e8e8;
+    color: #3B4252;
+    border-radius: 4px;
+  }
+  
+  nav a:hover {
+    color: white;
+    background-color: #42545C;
+  }
+  nav a:active {
+    background-color: black;
+  }
+
+  mat-drawer-content{
+    height: 100vh;
+    background-color: #434C5E;
+  }
+
+  mat-drawer{
+    background-color: #2E3440;
+  }
+  

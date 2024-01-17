@@ -1,0 +1,129 @@
+<div *ngIf="!edit">
+  <h1 class="header" style="margin-left: 20px; margin-top: 20px">
+    Lista de Rotas
+    <img
+      style="width: 20px"
+      src="https://flaticons.net/icon.php?slug_category=mobile-application&slug_icon=command-refresh"
+      (click)="listarRotas()"
+    />
+  </h1>
+
+  <hr /> 
+
+  <div *ngFor="let arm of rotas | async">
+    Armazem Inicial: {{ arm.armazemInicial }}    |    Armazem Final: {{ arm.armazemFinal }}
+    <button mat-icon-button (click)="getRota(arm.id)" class="form-button" async>
+      Editar
+    </button>
+    <hr />
+  </div>
+</div>
+
+<div *ngIf="edit">
+  <div class="form-div">
+    <form
+      [formGroup]="rotaForm"
+      [hidden]="success"
+      [hidden]="error"
+      (ngSubmit)="submit()"
+    >
+    <h1 class="header">Criar Rota</h1>
+    <hr >
+      <div class="example-form">
+        <mat-form-field [hideRequiredMarker]="true" class="full">
+          <label class="form-label">Armazém Inicial*</label>
+  
+          <input
+            matInput
+            formControlName="armazemInicial"
+            name="armazemInicial"
+            class="form-text-box"
+            required
+            maxlength="3"
+            required
+            minlength="3"
+          />
+          <div *ngIf="armazemInicial?.errors?.['minlength']">
+            Este campo tem que ter exatamente 3 caracteres
+          </div>
+        </mat-form-field>
+  
+        <mat-form-field [hideRequiredMarker]="true" class="full">
+          <label class="form-label">Armazém Final*</label>
+  
+          <input
+            matInput
+            formControlName="armazemFinal"
+            name="armazemFinal"
+            class="form-text-box"
+            required
+            maxlength="3"
+            required
+            minlength="3"
+          />
+          <div *ngIf="armazemFinal?.errors?.['minlength']">
+            Este campo tem que ter exatamente 3 caracteres
+          </div>
+        </mat-form-field>
+  
+        <mat-form-field [hideRequiredMarker]="true" class="full">
+          <label class="form-label">Duração*</label>
+  
+          <input
+            matInput
+            formControlName="duracao"
+            name="duracao"
+            class="form-text-box"
+          />
+        </mat-form-field>
+  
+        <mat-form-field [hideRequiredMarker]="true" class="full">
+          <label class="form-label">Energia Gasta*</label>
+  
+          <input
+            matInput
+            formControlName="energiaGasta"
+            name="energiaGasta"
+            class="form-text-box"
+          />
+        </mat-form-field>
+  
+        <mat-form-field [hideRequiredMarker]="true" class="full">
+          <label class="form-label">Distância*</label>
+  
+          <input
+            matInput
+            formControlName="distancia"
+            name="distancia"
+            class="form-text-box"
+          />
+        </mat-form-field>
+        <mat-form-field [hideRequiredMarker]="true" class="full">
+          <label class="form-label">Tempo Extra*</label>
+  
+          <input
+            matInput
+            formControlName="tempExtra"
+            name="tempExtra"
+            class="form-text-box"
+          />
+        </mat-form-field>
+        
+      </div>
+      <p style="margin-left: 20px">Campos de preenchimento obrigatório(*)</p>
+      <button [disabled]="rotaForm.invalid" class="form-button">Editar</button>
+      <button mat-icon-button (click)="back()" class="form-button">Voltar</button>
+      <div *ngIf="success && !error" class="success">
+        Foi criado a rota {{ rota.armazemInicial }} {{ rota.armazemFinal }}
+        {{ rota.duracao }} {{ rota.energiaGasta }} {{ rota.distancia }}
+        {{ rota.tempExtra }}
+      </div>
+      <div *ngIf="error" class="error">
+        <div *ngFor="let erro of errorsMessages">
+          {{ erro }}
+        </div>
+      </div>
+    </form>
+    
+  </div>
+</div>
